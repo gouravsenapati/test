@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Insert Data to Google Sheet</h2>
+
+<label>Name:</label>
+<input id="name"><br><br>
+
+<label>Score:</label>
+<input id="score"><br><br>
+
+<button onclick="sendData()">Insert</button>
+
+<p id="msg"></p>
+
+<script>
+async function sendData() {
+  const backendUrl = "https://script.google.com/macros/s/AKfycbzdsPdGtBfixBaW8qpVUnJh3y4QYukASS5ZPsAcC_rpnizineFnyr2bOSDkIMUIrR1ugA/exec";  // <--- Replace
+
+  const payload = {
+    name: document.getElementById("name").value,
+    score: document.getElementById("score").value
+  };
+
+  try {
+    const res = await fetch(backendUrl, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" }
+    });
+
+    const data = await res.json();
+    document.getElementById("msg").innerText = data.message;
+
+  } catch (err) {
+    document.getElementById("msg").innerText = "Error: " + err;
+  }
+}
+</script>
+
+</body>
+</html>
